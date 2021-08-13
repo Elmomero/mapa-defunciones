@@ -1,7 +1,7 @@
 import statesData from '../data/EcuadorStates.js';
 import features from './featuresEc.js';
 
-const map = L.map("mapid").setView([-0.914187, -81.69714], 6);
+const map = L.map("mapid").setView([-0.914187, -85.69714], 6);
 let geojson;
 let info = L.control();
 L.tileLayer(
@@ -87,17 +87,52 @@ info.onAdd = function (map) {
 };
 
 // method that we will use to update the control based on feature properties passed
-info.update = function (props) {
-    this._div.innerHTML = '<h4>Densidad Poblacional Ecuador</h4>' +  (props ?
-        '<b>' + props.nombre + '</b><br />' + props.densidad + ' personas / km<sup>2</sup>'
-        : 'Pasa el raton por encima');
-};
+// info.update = function (props) {
+//     this._div.innerHTML = '<h4>Densidad Poblacional Ecuador</h4>' +  (props ?
+//         '<b>' + props.nombre + '</b><br />' + props.densidad + ' personas / km<sup>2</sup>'
+//         : 'Pasa el raton por encima');
+// };
 ////////////////////////////////////////////////////////////
+// let {año,posicion} = devolverAño();   
+//     !año ? año = 0: null; 
+//     !posicion ? posicion = 12: null; 
+
+let año = 2020;
+let posicion = 12;
+document.body.addEventListener('click',(e)=>{
+    if(e.target.matches('.nav__link')){
+        año = e.target.dataset.year;
+        posicion = e.target.dataset.pos;    
+        info.update = function (props) {
+    
+            // this._div.innerHTML = '<h4>Muertes de niños año 2020</h4>' +  (props ?
+            //     '<b>' + props.nombre + '</b><br />' + props.anios.A2020 + ' personas '
+            //     : 'Pasa el raton por encima');     
+            this._div.innerHTML = `<h4>Muertes de niños año ${año}</h4>` +  (props ?
+                '<b>' + props.nombre + '</b><br />' + Object.values(props.anios)[posicion] + ' personas '
+                : 'Pasa el raton por encima');   
+        };
+        
+    }
+})
+
+
+
+// if(devolverAño()){
+//     let [year, position] = devolverAño();
+//     año = year;
+//     posicion = position;
+// }
+
+
 info.update = function (props) {
-    // let keys = props.densidad;
-    this._div.innerHTML = '<h4>Muertes de niños año 2020</h4>' +  (props ?
-        '<b>' + props.nombre + '</b><br />' + props.anios.A2020 + ' personas '
-        : 'Pasa el raton por encima');
+    
+    // this._div.innerHTML = '<h4>Muertes de niños año 2020</h4>' +  (props ?
+    //     '<b>' + props.nombre + '</b><br />' + props.anios.A2020 + ' personas '
+    //     : 'Pasa el raton por encima');     
+    this._div.innerHTML = `<h4>Muertes de niños año ${año}</h4>` +  (props ?
+        '<b>' + props.nombre + '</b><br />' + Object.values(props.anios)[posicion] + ' personas '
+        : 'Pasa el raton por encima');   
 };
 /////////////////////////////////////////////////////////////
 info.addTo(map);

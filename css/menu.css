@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: #EAEBEF;
+    font-family: 'Poppins', sans-serif;
+}
+.leaflet-bar{
+    display: none;
+}
+.hamburger{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    transition-duration: 500ms;
+}
+.trasladarBtn{
+    transform :translateX(300px) ;
+    transition: all 500ms;
+}
+.nav{
+    width: 300px;
+    position: relative;
+    z-index: 500;
+    background-color: #090909;
+}
+.ocultar{
+    transform: translateX(-300px);
+    transition: all 500ms;
+}
+.hamburger.is-active .hamburger-inner, .hamburger.is-active .hamburger-inner:after, .hamburger.is-active .hamburger-inner:before {
+    background-color: #fff;
+}
+.regresar{
+    transform: translateX(0);
+    transition: all 300ms;
+}
+.nav__link{
+    color: #303440;
+    display: block;
+    padding: 15px 0;
+    text-decoration: none;
+}
+
+.nav__link--inside{
+    border-radius: 6px ;
+    padding-left: 20px;
+    text-align: left;
+}
+
+.nav__link--inside:hover{
+    background: #F6F8FA;
+}
+
+.list{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 0 16px 16px 0;
+    /* color: white; */
+    /* background: #fff; */
+}
+
+.list__item{
+    list-style: none;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+}
+
+.list__item--click{
+    cursor: pointer;
+}
+
+.list__button{
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.arrow .list__arrow{
+    transform: rotate(90deg);
+}
+
+.list__arrow{
+    margin-left: auto;
+    transition: transform .3s;
+}
+
+.list__show{
+    width: 80%;
+    margin-left: auto;
+    border-left: 2px solid #303440;
+    list-style: none;
+    transition: height .4s;
+    height: 0;
+    max-height: 400px;
+    overflow: scroll;
+    overflow-x: hidden;
+    /* border-bottom: 1px solid #303440; */
+    
+    /* scrollbar-color: green; */
+}
+.list__show::-webkit-scrollbar{
+    width: 7px;
+    /* height: 20px; */
+    background-color: #303440;
+    border-radius: 10px;
+}
+.list__show::-webkit-scrollbar-thumb{
+    background-color: #111;
+    border-radius: 5px;
+    
+}

@@ -10,24 +10,7 @@
   left: 0;
   right: 0;
 }
-.btnVista{
-  z-index: 999;
-  position: absolute;
-  width: 200px;
-  height: 4vw;
-  text-align: center;
-  top: 10px;
-  left: 100px;
-  background-color: transparent;
-  color: black;
-  border: 3px solid #000;
-  border-radius: 5px;
-  font-family: 'Courier New', Courier, monospace;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-size: 1.2rem;
-  font-weight: 700;
-}
+
 .leaflet-control-attribution.leaflet-control{
     display: none;
 }
