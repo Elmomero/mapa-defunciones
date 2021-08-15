@@ -15,8 +15,6 @@ L.tileLayer(
   }
 ).addTo(map);
 statesData.features = features;
-// console.log(statesData.features);
-
 L.geoJson(statesData).addTo(map);
 function getColor(d) {
     return d > 1000 ? '#800026' :
@@ -29,9 +27,9 @@ function getColor(d) {
                       '#FFEDA0';
 }
 //////////////////////////////////////////////////
-function style(feature) {
+function style({properties}) {
     return {
-        fillColor: getColor(feature.properties.densidad),
+        fillColor: getColor(properties.anios.A2020),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -39,8 +37,10 @@ function style(feature) {
         fillOpacity: 0.7
     };
 }
-///////////////////////////////////////////////////////
+
 L.geoJson(statesData, {style: style}).addTo(map);
+
+///////////////////////////////////////////////////////
 function highlightFeature(e) {
     let layer = e.target;
 
@@ -66,6 +66,7 @@ function zoomToFeature(e) {
     map.fitBounds(e.target.getBounds());
 }
 function onEachFeature(feature, layer) {
+    
     layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
@@ -87,56 +88,43 @@ info.onAdd = function (map) {
 };
 
 // method that we will use to update the control based on feature properties passed
-// info.update = function (props) {
-//     this._div.innerHTML = '<h4>Densidad Poblacional Ecuador</h4>' +  (props ?
-//         '<b>' + props.nombre + '</b><br />' + props.densidad + ' personas / km<sup>2</sup>'
-//         : 'Pasa el raton por encima');
-// };
-////////////////////////////////////////////////////////////
-// let {año,posicion} = devolverAño();   
-//     !año ? año = 0: null; 
-//     !posicion ? posicion = 12: null; 
-
 let año = 2020;
 let posicion = 12;
+info.update = function (props) {
+    this._div.innerHTML = `<h4>Muertes de niños año ${año}</h4>` +  (props ?
+        '<b>' + props.nombre + '</b><br />' + Object.values(props.anios)[posicion] + ' personas '
+        : 'Pasa el raton por encima');
+};
 document.body.addEventListener('click',(e)=>{
-    if(e.target.matches('.nav__link')){
+    if(e.target.matches('.nav__link--inside')){
+        
+        function estilo({properties}){
+            let muertesAño = Object.values(properties.anios)[posicion];
+            return {
+                fillColor: getColor(muertesAño),
+                weight: 2,
+                opacity: 1,
+                color: 'white',
+                dashArray: '3',
+                fillOpacity: 0.7
+            };
+        }
+        L.geoJson(statesData, {
+            style: estilo,
+            onEachFeature: onEachFeature
+        }).addTo(map);
         año = e.target.dataset.year;
-        posicion = e.target.dataset.pos;    
+        posicion = e.target.dataset.pos;
         info.update = function (props) {
-    
-            // this._div.innerHTML = '<h4>Muertes de niños año 2020</h4>' +  (props ?
-            //     '<b>' + props.nombre + '</b><br />' + props.anios.A2020 + ' personas '
-            //     : 'Pasa el raton por encima');     
             this._div.innerHTML = `<h4>Muertes de niños año ${año}</h4>` +  (props ?
                 '<b>' + props.nombre + '</b><br />' + Object.values(props.anios)[posicion] + ' personas '
-                : 'Pasa el raton por encima');   
+                : 'Pasa el raton por encima');
         };
+        info.addTo(map);
         
     }
 })
-
-
-
-// if(devolverAño()){
-//     let [year, position] = devolverAño();
-//     año = year;
-//     posicion = position;
-// }
-
-
-info.update = function (props) {
-    
-    // this._div.innerHTML = '<h4>Muertes de niños año 2020</h4>' +  (props ?
-    //     '<b>' + props.nombre + '</b><br />' + props.anios.A2020 + ' personas '
-    //     : 'Pasa el raton por encima');     
-    this._div.innerHTML = `<h4>Muertes de niños año ${año}</h4>` +  (props ?
-        '<b>' + props.nombre + '</b><br />' + Object.values(props.anios)[posicion] + ' personas '
-        : 'Pasa el raton por encima');   
-};
-/////////////////////////////////////////////////////////////
 info.addTo(map);
-
 var legend = L.control({position: 'bottomright'});
 
 legend.onAdd = function (map) {
